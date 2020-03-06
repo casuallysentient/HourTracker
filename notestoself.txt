@@ -1,0 +1,3 @@
+- add a way to sort by the three columns - you can set up the ajax, start a session in a JavaScript onclick function, and then figure out how to use the hidden form to pass in the variables you need
+
+- figure out how to pass in the variables you need lmao
