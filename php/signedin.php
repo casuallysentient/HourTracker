@@ -45,10 +45,15 @@ session_start();
         //email and password are both saved as variables, email is trimmed of whitespace and set to all lowercase to avoid inconsistencies in data
         $email = strtolower(trim($_POST['email']));
         $userpassword = $_POST['userpassword'];
-        if($_SESSION['email'] != null) {
+        if($_SESSION['edited'] == false || $_SESSION['edited'] == null) {
+            $_SESSION['email'] = "";
+            $_SESSION['password'] = "";
+        }
+        if($_SESSION['email'] != null && $_SESSION['email'] != "") {
             $email = $_SESSION['email'];
             $userpassword = $_SESSION['userpassword'];
         }
+        session_destroy();
 
         //setting variables to connect to database
         $servername = "localhost";
@@ -79,6 +84,7 @@ session_start();
                 $lastname = $row[2];
                 $email = $row[4];
                 $phone = $row[5];
+                session_start();
                 $_SESSION['userid'] = $userid;
                 $_SESSION['email'] = $email;
                 $_SESSION['userpassword'] = $userpassword;

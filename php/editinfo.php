@@ -15,6 +15,7 @@ $userpassword = $_POST['userpassword'];
 $confirmedpassword = $_POST['confirmedpassword'];
 $_SESSION['email'] = $email;
 $_SESSION['userpassword'] = $userpassword;
+$_SESSION['edited'] = true;
 
 $servername = "localhost";
 $username = "fblauser";
