@@ -215,7 +215,3 @@ th, td {
     margin: 0;
     width: 93%;
 }
-
-input[type = "submit"] {
-    cursor: pointer;
-}

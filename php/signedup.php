@@ -34,10 +34,11 @@ if($userpassword == $confirmedpassword) {
             $stmt = $mysqli->prepare("INSERT INTO User(FirstName, LastName, Email, Phone, UserPassword) VALUES (?,?,?,?,?)");
             $stmt->bind_param("sssss", $firstname, $lastname, $email, $phone, $userpassword);
             $stmt->execute();
-            echo "<script type='text/javascript'>
-            alert('Account successfully created. Please log in.');
-            window.location.href = '../volunteer.html';
-            </script>";
+            session_start();
+            $_SESSION['email'] = $email;
+            $_SESSION['userpassword'] = $userpassword;
+            header('Location:signedin.php');
+            echo('wiener');
         }
     } else {
         echo "<script type='text/javascript'>

@@ -25,11 +25,5 @@ if ($mysqli->connect_error) {
 $stmt = $mysqli->prepare("INSERT INTO Activity(ActivityType, ActivityDate, Length, UserID) VALUES (?,?,?,?)");
 $stmt->bind_param("ssii", $activity, $date, $length, $userid);
 $stmt->execute();
+header('Location:signedin.php');
 ?>
-<form name = "form" id = "hiddenform" action = "signedin.php">
-    <input type = "hidden" value = <?php echo $email ?>/>
-    <input type = "hidden" value = <?php echo $userpassword?>/>
-</form>
-<script>
-    document.forms["hiddenform"].submit();
-</script>
