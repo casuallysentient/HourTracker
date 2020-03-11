@@ -13,6 +13,8 @@ $email = strtolower(trim($_POST['email']));
 $phone = trim($_POST['phone']);
 $userpassword = $_POST['userpassword'];
 $confirmedpassword = $_POST['confirmedpassword'];
+$_SESSION['email'] = $email;
+$_SESSION['userpassword'] = $userpassword;
 
 $servername = "localhost";
 $username = "fblauser";
@@ -63,4 +65,5 @@ if($userpassword == $confirmedpassword) {
         </script>";
 }
 $mysqli->close();
+header('Location:signedin.php');
 ?>
