@@ -9,6 +9,9 @@ $date = $_POST['date'];
 $userid = $_SESSION['userid'];
 $email = $_SESSION['email'];
 $userpassword = $_SESSION['userpassword'];
+$_SESSION['email'] = $email;
+$_SESSION['userpassword'] = $userpassword;
+$_SESSION['edited'] = true;
 
 $servername = "localhost";
 $username = "fblauser";
