@@ -20,6 +20,14 @@ session_start();
                 document.getElementById("editinfo").style.display = "block";
                 document.getElementById("editbutton").style.display = "none";
             }
+            function cancelEdits() {
+                document.getElementById("nameinfo").style.display = "block";
+                document.getElementById("emailinfo").style.display = "block";
+                document.getElementById("phoneinfo").style.display = "block";
+                document.getElementById("passwordinfo").style.display = "block";
+                document.getElementById("editinfo").style.display = "none";
+                document.getElementById("editbutton").style.display = "block";
+            }
             function newEntry() {
                 document.getElementById("newentryform").style.display = "block";
                 document.getElementById("newentrybutton").style.display = "none";
@@ -52,6 +60,13 @@ session_start();
         if($_SESSION['email'] != null && $_SESSION['email'] != "") {
             $email = $_SESSION['email'];
             $userpassword = $_SESSION['userpassword'];
+        }
+        if($email == "" || $email == null) {
+            echo "<script type='text/javascript'>
+            alert('You are not signed in. Please return to the home page and sign in.');
+            window.location.href = '../volunteer.html';
+            signIn();
+            </script>";
         }
         session_destroy();
 
@@ -125,7 +140,11 @@ session_start();
                     <br>
                     <p>&nbspConfirm Password:<input type="password" id = "confirmedpasswordfield" name="confirmedpassword" size="30" required/></p>
                     <br>
-                    <p>&nbsp<input type="submit" id = "saveedits" name="saveedits" value="Save Edits" /></p>
+                    <div id = "editingbuttons">
+                        &nbsp<button type = 'button' class = "inputstyle" id = "canceledits" onclick = "cancelEdits()">Cancel</button>
+                        <br>
+                        <input type="submit" id = "saveedits" name="saveedits" value="Save Edits" />
+                    </div>
                 </form>
                 &nbsp<button type = 'button' class = 'selection' id = "editbutton" onclick = "editInfo()">Edit</button>
             </div>
@@ -163,7 +182,7 @@ session_start();
                     echo "<tr><td style = 'border-bottom: none;'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table></div>";
                 }
                 ?>
-                <div><button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button></div>
+                <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button>
                 <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
                     <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
                     <input class = "entryfield" type = "number" id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>

@@ -67,6 +67,7 @@ input {
     font-family: "EB Garamond";
     width: 50%;
     float: right;
+    height: 50px;
 }
 
 table {
@@ -165,6 +166,21 @@ th, td {
     font-weight: bolder;
 }
 
+.inputstyle {
+    border-radius: 10px;
+    border: 2px solid black;
+    outline: none;
+    font-size: 100%;
+    margin: 0;
+    width: 20%;
+    height: auto;
+    font-family: "EB Garamond";
+    background-color: #f0f0f0;
+    width: 50%;
+    float: right;
+    height: 50px;
+}
+
 .entryfield {
     width: 30%;
     height: 10%;
@@ -210,8 +226,27 @@ th, td {
     display: none;
 }
 
+#passwordinfo {
+    margin-bottom: 0;
+}
+
 #newentryform {
     display: none;
     margin: 0;
     width: 93%;
+}
+
+#editbutton {
+    margin-top: 0;
+}
+
+#saveedits {
+    float: right;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#editingbuttons {
+    display: flex;
+    flex-direction: row;
 }
