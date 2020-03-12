@@ -1,12 +1,16 @@
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <?php
+session_start();
 $firstname = ucfirst(strtolower(trim($_POST['firstname'])));
 $lastname = ucfirst(strtolower(trim($_POST['lastname'])));
 $email = strtolower(trim($_POST['email']));
 $phone = trim($_POST['phone']);
 $userpassword = $_POST['userpassword'];
 $confirmedpassword = $_POST['confirmedpassword'];
+$_SESSION['email'] = $email;
+$_SESSION['userpassword'] = $userpassword;
+$_SESSION['signup'] = true;
 
 $servername = "localhost";
 $username = "fblauser";
@@ -28,7 +32,7 @@ if($userpassword == $confirmedpassword) {
             $row = $res->fetch_assoc();
             echo "<script type='text/javascript'>
             alert('This email is already in use.');
-            window.location.href = '../volunteer.html';
+            window.location.href = 'volunteer.php';
             </script>";
         } else {
             $stmt = $mysqli->prepare("INSERT INTO User(FirstName, LastName, Email, Phone, UserPassword) VALUES (?,?,?,?,?)");
@@ -38,18 +42,17 @@ if($userpassword == $confirmedpassword) {
             $_SESSION['email'] = $email;
             $_SESSION['userpassword'] = $userpassword;
             header('Location:signedin.php');
-            echo('wiener');
         }
     } else {
         echo "<script type='text/javascript'>
         alert('Please only use alphanumeric characters, hyphens, underscores, and periods in the password.');
-        window.location.href = '../volunteer.html';
+        window.location.href = 'volunteer.php';
         </script>";
     }
 } else {
     echo "<script type='text/javascript'>
     alert('The passwords do not match.');
-    window.location.href = '../volunteer.html';
+    window.location.href = 'volunteer.php';
     </script>";
 }
 $mysqli->close();

@@ -37,7 +37,7 @@ if($userpassword == $confirmedpassword) {
             $row = $res->fetch_assoc();
             echo "<script type='text/javascript'>
                 alert('This email is already in use. For security purposes, you have been signed out.');
-                window.location.href = '../volunteer.html';
+                window.location.href = 'volunteer.php';
             </script>";
 
         } else {
@@ -49,20 +49,20 @@ if($userpassword == $confirmedpassword) {
                 $stmt->execute();
                 echo "<script type='text/javascript'>
                     alert('The changes were successfully saved. For security purposes, you have been signed out.');
-                    window.location.href = '../volunteer.html';
+                    window.location.href = 'volunteer.php';
                 </script>";
             }
         }
     } else {
         echo "<script type='text/javascript'>
             alert('Please only use alphanumeric characters, hyphens, underscores, and periods in the password. For security purposes, you have been signed out.');
-            window.location.href = '../volunteer.html';
+            window.location.href = 'volunteer.php';
             </script>";
     }
 } else {
     echo "<script type='text/javascript'>
         alert('The passwords do not match. For security purposes, you have been signed out.');
-        window.location.href = '../volunteer.html';
+        window.location.href = 'volunteer.php';
         </script>";
 }
 $mysqli->close();

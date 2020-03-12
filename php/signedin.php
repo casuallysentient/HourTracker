@@ -53,10 +53,11 @@ session_start();
         //email and password are both saved as variables, email is trimmed of whitespace and set to all lowercase to avoid inconsistencies in data
         $email = strtolower(trim($_POST['email']));
         $userpassword = $_POST['userpassword'];
-        if($_SESSION['edited'] == false || $_SESSION['edited'] == null) {
+        if(($_SESSION['edited'] == false || $_SESSION['edited'] == null) && $_SESSION['email'] != "" && $_SESSION['signup'] == false) {
             $_SESSION['email'] = "";
             $_SESSION['password'] = "";
         }
+        $_SESSION['signup'] = false;
         if($_SESSION['email'] != null && $_SESSION['email'] != "") {
             $email = $_SESSION['email'];
             $userpassword = $_SESSION['userpassword'];
@@ -64,11 +65,10 @@ session_start();
         if($email == "" || $email == null) {
             echo "<script type='text/javascript'>
             alert('You are not signed in. Please return to the home page and sign in.');
-            window.location.href = '../volunteer.html';
+            window.location.href = 'volunteer.php';
             signIn();
             </script>";
         }
-        session_destroy();
 
         //setting variables to connect to database
         $servername = "localhost";
@@ -89,7 +89,7 @@ session_start();
             if ($res->num_rows == 0) { //looks for matching account (same email and password), reloads page if incorrect and logs in if correct
                 echo "<script type='text/javascript'>
                     alert('Incorrect username/password.');
-                    window.location.href = '../volunteer.html';
+                    window.location.href = 'volunteer.php';
                     signIn();
                     </script>";
             } else {
@@ -107,13 +107,13 @@ session_start();
         } else {
             echo "<script type='text/javascript'>
                 alert('Please only use alphanumeric characters, hyphens, underscores, and periods in the password. '.$userpassword.'');
-                window.location.href = '../volunteer.html';
+                window.location.href = 'volunteer.php';
                 </script>";
         }
         $mysqli->close();
     ?>
     <body>
-        <a href = "../volunteer.html" style = "font-style: none; color: black; text-decoration: none;">
+        <a href = "volunteer.php" style = "font-style: none; color: black; text-decoration: none;">
             <div id="header">
             HOUR TRACKER
             </div>
@@ -161,35 +161,36 @@ session_start();
                 $res = mysqli_query($mysqli, $sql);
                 if ($res->num_rows > 0) {
                     echo "<div id = 'tablecontainer'>
-                        <table>
-                            <col width = 25%>
-                            <col width = 100%>
-                            <col width = 50%>
-                            <tr>
-                                <th style = 'border-right-width: 2px; border-top-left-radius: 12px; border-bottom-left-radius: 12px'>Date</th>
-                                <th style = 'border-left-width: 2px; border-right-width: 2px;'>Activity</th>
-                                <th style = 'border-left-width: 2px; border-top-right-radius: 12px; border-bottom-right-radius: 12px'>Length</th>
-                            </tr>";
-                    $totalhours = 0;
-                    while($row = $res->fetch_row()) {
-                        $activityid = $row[0];
-                        echo '<tr id='.$activityid.'><td>' .
-                        $row[2] . '</td><td>' .
-                        $row[1] . '</td><td>' .
-                        $row[3] . '</td></tr>';
-                        $totalhours += $row[3];
+                            <table>
+                                <col width = 25%>
+                                <col width = 100%>
+                                <col width = 50%>
+                                <tr>
+                                    <th style = 'border-right-width: 2px; border-top-left-radius: 12px; border-bottom-left-radius: 12px'>Date</th>
+                                    <th style = 'border-left-width: 2px; border-right-width: 2px;'>Activity</th>
+                                    <th style = 'border-left-width: 2px; border-top-right-radius: 12px; border-bottom-right-radius: 12px'>Length</th>
+                                </tr>";
+                        $totalhours = 0;
+                        while($row = $res->fetch_row()) {
+                            $activityid = $row[0];
+                            echo '<tr id='.$activityid.'><td>' .
+                            $row[2] . '</td><td>' .
+                            $row[1] . '</td><td>' .
+                            $row[3] . '</td></tr>';
+                            $totalhours += $row[3];
+                        }
+                        echo "<tr><td style = 'border-bottom: none;'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table>";
                     }
-                    echo "<tr><td style = 'border-bottom: none;'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table>";
-                }
-                ?>
-                <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button></div>
-                <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
-                    <input class = "entryfield" type = "number" id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
-                    <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
-                    <input class = "entryfield" type = "date" name = "date" id = "datefield" required/>
-                    <br>
-                    <input class = "entryfield" type = "submit" id = "submitentry" name = "submitentry" value = "Submit Entry">
-                </form>
+                    ?>
+                    <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button>
+                    <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
+                        <input class = "entryfield" type = "number" id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
+                        <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
+                        <input class = "entryfield" type = "date" name = "date" id = "datefield" required/>
+                        <br>
+                        <input class = "entryfield" type = "submit" id = "submitentry" name = "submitentry" value = "Submit Entry">
+                    </form>
+                </div>
             </div>
         </div>
     </body>

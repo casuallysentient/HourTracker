@@ -154,6 +154,7 @@ th, td {
     padding: 0.2%;
     border: 5px solid black;
     overflow: scroll;
+    margin-right: 1%;
 }
 
 .selection {
@@ -185,7 +186,7 @@ th, td {
 
 .entryfield {
     width: 30%;
-    height: 10%;
+    height: 50px;
     margin: 2px;
 }
 
@@ -265,4 +266,5 @@ th, td {
 #contentholder {
     display: flex;
     flex-direction: row;
+    background-color: inherit;
 }

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<?php
+    session_start();
+    $_SESSION['edited'] = false;
+    $_SESSION['email'] = "";
+    $_SESSION['password'] = "";
+?>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Hour Tracker</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="../css/volunteer.css">
+
+        <!-- JavaScript -->
+        <script src="../js/volunteer.js"></script>
+
+        <!-- Font -->
+        <link href="https://fonts.googleapis.com/css?family=EB+Garamond&display=swap" rel="stylesheet">
+
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+        <link rel="manifest" href="../favicon/site.webmanifest">
+        <link rel="mask-icon" href="../favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+    <body>
+        <a href = "volunteer.php" style = "font-style: none; color: black; text-decoration: none;">
+            <div id="header">
+            HOUR TRACKER
+            </div>
+        </a>
+        <div id = "contentholder">
+            <div id="select">
+                <img src = "../images/logo.png" id = "logo">
+                <br>
+                <button type = "button" class = "selection" onclick = "signIn()">Sign In</button>
+                <button type = "button" class = "selection" onclick = "signUp()">Sign Up</button>
+            </div>
+            <div id="description">
+                <div id = "instructions">
+                    <h2>Welcome to the hour tracker!</h2>
+                    <br>
+                    <p>Here, you can enter any volunteer hours that you've earned. Using this tool, you can track your hours in your pursuit of CSA excellence. Don't worry about losing any of your information - we'll keep it safe for you. To get started, please select one of the options to the left.</p>
+                </div>
+                <div id = "signinform">
+                    <form action = "signedin.php" method = "post">
+                        <p>Email:<input type="email" id = "existingemail" name="email" size="30" value="" required/></p>
+                        <br>
+                        <p>Password:<input type="password" id = "existingpassword" name="userpassword" size="30" value="" required/></p>
+                        <br>
+                        <p><input type="submit" id = "signin" name="signin" value="Sign In"/></p>
+                    </form>
+                </div>
+                <div id = "signupform">
+                    <form action = "signedup.php" method = "post">
+                        <p>First Name:<input type="text" id = "firstname" name = "firstname" size="30" value="" required/></p>
+                        <br>
+                        <p>Last Name:<input type="text" id = "lastname" name="lastname" size="30" value="" required/></p>
+                        <br>
+                        <p>Email:<input type="email" id = "email" name="email" size="30" value="" required/></p>
+                        <br>
+                        <p>Phone:<input type="tel" id = "phone" name="phone" pattern="[0-9]{10}" maxlength = 10 required/></p>
+                        <br>
+                        <p>Password:<input type="password" id = "userpassword" name="userpassword" size="30" value="" required/></p>
+                        <br>
+                        <p>Confirm Password:<input type="password" id = "confirmedpassword" name="confirmedpassword" size="30" value="" required/></p>
+                        <br>
+                        <p><input type="submit" id = "signup" name="signup" value="Sign Up" /></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
