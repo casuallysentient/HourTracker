@@ -138,7 +138,9 @@ th, td {
 }
 
 #tablecontainer {
-    height: 10%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 #userinfo {
@@ -247,6 +249,20 @@ th, td {
 }
 
 #editingbuttons {
+    display: flex;
+    flex-direction: row;
+}
+
+#newentrybutton {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#submitentry {
+    cursor: pointer;
+}
+
+#contentholder {
     display: flex;
     flex-direction: row;
 }

@@ -160,7 +160,7 @@ session_start();
                 $sql = "SELECT * FROM Activity WHERE (UserID = '$userid')";
                 $res = mysqli_query($mysqli, $sql);
                 if ($res->num_rows > 0) {
-                    echo "<div id = 'tablecontainer' style = 'clear:both;'>
+                    echo "<div id = 'tablecontainer'>
                         <table>
                             <col width = 25%>
                             <col width = 100%>
@@ -179,13 +179,13 @@ session_start();
                         $row[3] . '</td></tr>';
                         $totalhours += $row[3];
                     }
-                    echo "<tr><td style = 'border-bottom: none;'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table></div>";
+                    echo "<tr><td style = 'border-bottom: none;'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table>";
                 }
                 ?>
-                <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button>
+                <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button></div>
                 <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
-                    <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
                     <input class = "entryfield" type = "number" id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
+                    <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
                     <input class = "entryfield" type = "date" name = "date" id = "datefield" required/>
                     <br>
                     <input class = "entryfield" type = "submit" id = "submitentry" name = "submitentry" value = "Submit Entry">
