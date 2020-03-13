@@ -161,7 +161,7 @@ th, td {
     border-radius: 10px;
     border: 2px solid black;
     outline: none;
-    font-size: 100%;
+    font-size: 30px;
     margin: 0;
     width: 20%;
     height: auto;
@@ -267,4 +267,17 @@ th, td {
     display: flex;
     flex-direction: row;
     background-color: inherit;
+}
+
+#firstnamefield {
+    margin-top: 0;
+}
+
+#deleteaccount {
+    display: none;
+    margin-left: 5px;
+}
+
+#executiveactions {
+    margin-left: 10px;
 }

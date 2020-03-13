@@ -19,19 +19,36 @@ session_start();
                 document.getElementById("passwordinfo").style.display = "none";
                 document.getElementById("editinfo").style.display = "block";
                 document.getElementById("editbutton").style.display = "none";
+                document.getElementById("spaces").style.display = "none";
+                document.getElementById("deleteaccount").style.display = "block";
+                document.getElementById("logout").className = "inputStyle";
+                document.getElementById("deleteaccount").className = "inputStyle";
+                document.getElementById("logout").style.marginLeft = "0px";
+                document.getElementById("executiveactions").style.marginLeft = "7px";
             }
             function cancelEdits() {
-                document.getElementById("nameinfo").style.display = "block";
-                document.getElementById("emailinfo").style.display = "block";
-                document.getElementById("phoneinfo").style.display = "block";
-                document.getElementById("passwordinfo").style.display = "block";
-                document.getElementById("editinfo").style.display = "none";
-                document.getElementById("editbutton").style.display = "block";
+                window.location.reload();
             }
             function newEntry() {
                 document.getElementById("newentryform").style.display = "block";
                 document.getElementById("newentrybutton").style.display = "none";
             }
+            function logOut() {
+                window.location.href = 'volunteer.php';
+            }
+            function deleteAccount() {
+                var deleteConfirmation = confirm("Are you sure you want to delete your account? Your email will be able to be reactivated, but the action can not otherwise be undone.");
+                if(deleteConfirmation == true) {
+                    window.location.href = 'deleteaccount.php'
+                }
+            }
+            // function deleteEntry(entryid) {
+            //
+            //     var deleteConfirmation = confirm("Are you sure you want to delete your account? Your email will be able to be reactivated, but the action can not otherwise be undone.");
+            //     if(deleteConfirmation == true) {
+            //         window.location.href = 'deleteentry.php'
+            //     }
+            // }
         </script>
 
         <!-- jQuery -->
@@ -99,7 +116,6 @@ session_start();
                 $lastname = $row[2];
                 $email = $row[4];
                 $phone = $row[5];
-                session_start();
                 $_SESSION['userid'] = $userid;
                 $_SESSION['email'] = $email;
                 $_SESSION['userpassword'] = $userpassword;
@@ -127,7 +143,7 @@ session_start();
                     echo "<div id='phoneinfo'>&nbspPhone: " . $phone . "</div><br>";
                     echo "<div id='passwordinfo'>&nbspPassword: " . $userpassword . "</div><br>";
                 ?>
-                <form id="editinfo" action = "editinfo.php" style = "display: none; margin-top: 0; height: auto;" method = "post">
+                <form id="editinfo" action = "editinfo.php" style = "display: none; margin-top: 0; margin-bottom: 0; height: auto;" method = "post">
                     <p>&nbspFirst Name:<input type="text" id = "firstnamefield" name = "firstname" size="30" value=<?php echo $firstname ?> required/></p>
                     <br>
                     <p>&nbspLast Name:<input type="text" id = "lastnamefield" name="lastname" size="30" value=<?php echo $lastname ?> required/></p>
@@ -142,11 +158,10 @@ session_start();
                     <br>
                     <div id = "editingbuttons">
                         &nbsp<button type = 'button' class = "inputstyle" id = "canceledits" onclick = "cancelEdits()">Cancel</button>
-                        <br>
                         <input type="submit" id = "saveedits" name="saveedits" value="Save Edits" />
                     </div>
                 </form>
-                &nbsp<button type = 'button' class = 'selection' id = "editbutton" onclick = "editInfo()">Edit</button>
+                <div id = "executiveactions" style = "display: flex; flex-direction: row;"><button type = 'button' class = 'selection' id = "editbutton" onclick = "editInfo()">Edit</button><p id = "spaces">&nbsp&nbsp</p><button type = 'button' class = 'selection' id = "logout" onclick = "logOut()">Log Out</button><button type = 'button' class = 'selection' id = "deleteaccount" style = "display: none;margin-left:5px;background-color:darksalmon;" onclick = "deleteAccount()">Delete Account</button></div>
             </div>
             <div id="table">
                 <div style = "text-align: center; clear: both;"><h3 style = "font-weight: bold;">Hours</h3></div>
@@ -173,7 +188,7 @@ session_start();
                         $totalhours = 0;
                         while($row = $res->fetch_row()) {
                             $activityid = $row[0];
-                            echo '<tr id='.$activityid.'><td>' .
+                            echo '<tr id='.$activityid.' onclick=\'deleteEntry('.$activityid.')\'><td>' .
                             $row[2] . '</td><td>' .
                             $row[1] . '</td><td>' .
                             $row[3] . '</td></tr>';
@@ -184,7 +199,7 @@ session_start();
                     ?>
                     <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button>
                     <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
-                        <input class = "entryfield" type = "number" id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
+                        <input class = "entryfield" type = "number" step = 0.01 id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
                         <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
                         <input class = "entryfield" type = "date" name = "date" id = "datefield" required/>
                         <br>
