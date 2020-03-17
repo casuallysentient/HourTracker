@@ -214,7 +214,7 @@ session_start();
                         $row[3] . '</td></tr>';
                         $totalhours += $row[3];
                     }
-                    echo "<tr><td style = 'border-bottom: none;' id='totalrow'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table><br>";
+                    echo "<tr><td style = 'border-bottom: none;' id='totalrow'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table>";
                 }
                 $mysqli->close();
                 ?>
