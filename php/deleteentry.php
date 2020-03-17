@@ -1,6 +1,5 @@
 <?php
 session_start();
-header('Location:signedin.php');
 $activitynumber = $_POST['activitynumber'];
 $mysqli = new mysqli("localhost", "fblauser", "fbla2020", "volunteer_hours");
 if($mysqli->connect_error) {

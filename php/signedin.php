@@ -54,6 +54,7 @@ session_start();
                             url: "deleteentry.php",
                             data: { activitynumber: activityNumber }
                         });
+                        window.location.reload();
                     }
                 }
             }
@@ -240,7 +241,7 @@ session_start();
                     }
                     $mysqli->close();
                     ?>
-                    <button type = 'button' class = 'selection' id = "canceldeletebutton" onclick = 'window.location.reload()' style = 'display:none;background-color:darksalmon'>Cancel</button>
+                    <button type = 'button' class = 'selection' id = "canceldeletebutton" onclick = 'window.location.reload()' style = 'display:none;'>Cancel</button>
                 </div>
             </div>
         </div>
