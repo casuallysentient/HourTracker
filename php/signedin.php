@@ -2,6 +2,7 @@
 session_start();
 ?>
 <html>
+    <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
         <title>Hour Tracker</title>
@@ -12,11 +13,9 @@ session_start();
         <!-- JavaScript -->
         <script src="../js/volunteer.js"></script>
         <script>
+            var deleting = false;
             function editInfo() {
-                document.getElementById("nameinfo").style.display = "none";
-                document.getElementById("emailinfo").style.display = "none";
-                document.getElementById("phoneinfo").style.display = "none";
-                document.getElementById("passwordinfo").style.display = "none";
+                document.getElementById("hideinfo").style.display = "none";
                 document.getElementById("editinfo").style.display = "block";
                 document.getElementById("editbutton").style.display = "none";
                 document.getElementById("spaces").style.display = "none";
@@ -32,6 +31,8 @@ session_start();
             function newEntry() {
                 document.getElementById("newentryform").style.display = "block";
                 document.getElementById("newentrybutton").style.display = "none";
+                document.getElementById("deleteentrybutton").style.display = "none";
+                document.getElementById("canceldeletebutton").style.display = "none";
             }
             function logOut() {
                 window.location.href = 'volunteer.php';
@@ -42,13 +43,30 @@ session_start();
                     window.location.href = 'deleteaccount.php'
                 }
             }
-            // function deleteEntry(entryid) {
-            //
-            //     var deleteConfirmation = confirm("Are you sure you want to delete your account? Your email will be able to be reactivated, but the action can not otherwise be undone.");
-            //     if(deleteConfirmation == true) {
-            //         window.location.href = 'deleteentry.php'
-            //     }
-            // }
+            function deleteEntry(entryid) {
+                if(deleting == true) {
+                    var deleteConfirmation = confirm("Are you sure you want to delete your account? Your email will be able to be reactivated, but the action can not otherwise be undone.");
+                    var activityNumber = entryid.substr(8);
+                    console.log(activityNumber);
+                    if(deleteConfirmation == true) {
+                        $.ajax({
+                            method: "POST",
+                            url: "deleteentry.php",
+                            data: { activitynumber: activityNumber }
+                        });
+                    }
+                }
+            }
+            function timeToDelete() {
+                deleting = true;
+                document.getElementById('deleteentrybutton').style.display = "none";
+                document.getElementById('canceldeletebutton').style.display = "inline-block";
+                document.getElementById("newentrybutton").style.display = "none";
+                var activitydatalist = document.getElementsByClassName('activitydata');
+                for(i = 0; i < activitydatalist.length; i++) {
+                    activitydatalist[i].style.cursor = 'pointer';
+                }
+            }
         </script>
 
         <!-- jQuery -->
@@ -138,11 +156,13 @@ session_start();
             <div id="userinfo">
                 <div style = "text-align: center;"><h3 style = "font-weight: bold;">User Info</h3></div>
                 <?php
-                    echo "<div id='nameinfo'>&nbspName: " . $firstname . " " . $lastname . "</div><br>";
-                    echo "<div id='emailinfo'>&nbspEmail: " . $email . "</div><br>";
-                    echo "<div id='phoneinfo'>&nbspPhone: " . $phone . "</div><br>";
-                    echo "<div id='passwordinfo'>&nbspPassword: " . $userpassword . "</div><br>";
-                ?>
+                   echo "<div id='hideinfo'>";
+                       echo "<div id='nameinfo'>&nbspName: " . $firstname . " " . $lastname . "</div><br>";
+                       echo "<div id='emailinfo'>&nbspEmail: " . $email . "</div><br>";
+                       echo "<div id='phoneinfo'>&nbspPhone: " . $phone . "</div><br>";
+                       echo "<div id='passwordinfo'>&nbspPassword: " . $userpassword . "</div><br>";
+                   echo "</div>";
+                 ?>
                 <form id="editinfo" action = "editinfo.php" style = "display: none; margin-top: 0; margin-bottom: 0; height: auto;" method = "post">
                     <p>&nbspFirst Name:<input type="text" id = "firstnamefield" name = "firstname" size="30" value=<?php echo $firstname ?> required/></p>
                     <br>
@@ -158,7 +178,7 @@ session_start();
                     <br>
                     <div id = "editingbuttons">
                         &nbsp<button type = 'button' class = "inputstyle" id = "canceledits" onclick = "cancelEdits()">Cancel</button>
-                        <input type="submit" id = "saveedits" name="saveedits" value="Save Edits" />
+                        <input type="submit" id = "saveedits" name="saveedits" value="Save Edits"/>
                     </div>
                 </form>
                 <div id = "executiveactions" style = "display: flex; flex-direction: row;"><button type = 'button' class = 'selection' id = "editbutton" onclick = "editInfo()">Edit</button><p id = "spaces">&nbsp&nbsp</p><button type = 'button' class = 'selection' id = "logout" onclick = "logOut()">Log Out</button><button type = 'button' class = 'selection' id = "deleteaccount" style = "display: none;margin-left:5px;background-color:darksalmon;" onclick = "deleteAccount()">Delete Account</button></div>
@@ -175,36 +195,52 @@ session_start();
                 $sql = "SELECT * FROM Activity WHERE (UserID = '$userid')";
                 $res = mysqli_query($mysqli, $sql);
                 if ($res->num_rows > 0) {
-                    echo "<div id = 'tablecontainer'>
-                            <table>
-                                <col width = 25%>
-                                <col width = 100%>
-                                <col width = 50%>
-                                <tr>
-                                    <th style = 'border-right-width: 2px; border-top-left-radius: 12px; border-bottom-left-radius: 12px'>Date</th>
-                                    <th style = 'border-left-width: 2px; border-right-width: 2px;'>Activity</th>
-                                    <th style = 'border-left-width: 2px; border-top-right-radius: 12px; border-bottom-right-radius: 12px'>Length</th>
-                                </tr>";
-                        $totalhours = 0;
-                        while($row = $res->fetch_row()) {
-                            $activityid = $row[0];
-                            echo '<tr id='.$activityid.' onclick=\'deleteEntry('.$activityid.')\'><td>' .
-                            $row[2] . '</td><td>' .
-                            $row[1] . '</td><td>' .
-                            $row[3] . '</td></tr>';
-                            $totalhours += $row[3];
-                        }
-                        echo "<tr><td style = 'border-bottom: none;'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table>";
+                    echo "<table>
+                        <col width = 25%>
+                        <col width = 100%>
+                        <col width = 50%>
+                        <tr>
+                            <th style = 'border-right-width: 2px; border-top-left-radius: 12px; border-bottom-left-radius: 12px'>Date</th>
+                            <th style = 'border-left-width: 0px; border-right-width: 0px;'>Activity</th>
+                            <th style = 'border-left-width: 2px; border-top-right-radius: 12px; border-bottom-right-radius: 12px'>Length</th>
+                        </tr>";
+                    $totalhours = 0;
+                    while($row = $res->fetch_row()) {
+                        $activityid = $row[0];
+                        echo "<tr class = 'activityrow' id='activity".$activityid."' onclick='deleteEntry(\"activity".$activityid."\")'><td class = 'activitydata'>" .
+                        $row[2] . '</td><td class = \'activitydata\'>' .
+                        $row[1] . '</td><td class = \'activitydata\'>' .
+                        $row[3] . '</td></tr>';
+                        $totalhours += $row[3];
                     }
-                    ?>
+                    echo "<tr><td style = 'border-bottom: none;' id='totalrow'>TOTAL</td><td style = 'border-bottom: none;'></td><td style = 'border-bottom: none;'>" . $totalhours . "</td></tr></table><br>";
+                }
+                $mysqli->close();
+                ?>
+                <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
+                    <input class = "entryfield" type = "number" step = 0.01 id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
+                    <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" maxlength = 30 required/>
+                    <input class = "entryfield" type = "date" name = "date" id = "datefield" required/>
+                    <br>
+                    <button type = 'button' class = "inputstyle" id = "cancelentry" onclick = "window.location.reload()">Cancel</button>
+                    <input class = "entryfield" type = "submit" id = "submitentry" name = "submitentry" value = "Submit Entry">
+                </form>
+                <div style = "display:inline-flex;flex-direction:row;text-align:center;height:15%;width:40%;justify-content:center;">
                     <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button>
-                    <form id = "newentryform" action = "newentry.php" method = "post" style = "display: none;">
-                        <input class = "entryfield" type = "number" step = 0.01 id = "length" name = "length" min = 0 max = 1000 placeholder = "Length (Hours)" required/>
-                        <input class = "entryfield" type = "text" id = "activity" name = "activity" placeholder = "Activity" required/>
-                        <input class = "entryfield" type = "date" name = "date" id = "datefield" required/>
-                        <br>
-                        <input class = "entryfield" type = "submit" id = "submitentry" name = "submitentry" value = "Submit Entry">
-                    </form>
+                    <?php
+                    $mysqli = new mysqli($servername, $username, $password, $dbname);
+                    // checks connection
+                    if ($mysqli->connect_error) {
+                        die("Connection failed: " . $mysqli->connect_error);
+                    }
+                    $sql = "SELECT * FROM Activity WHERE (UserID = '$userid')";
+                    $res = mysqli_query($mysqli, $sql);
+                    if ($res->num_rows > 0) {
+                        echo("<button type = 'button' class = 'selection' id = 'deleteentrybutton' onclick = 'timeToDelete()'>Delete Entry</button>");
+                    }
+                    $mysqli->close();
+                    ?>
+                    <button type = 'button' class = 'selection' id = "canceldeletebutton" onclick = 'window.location.reload()' style = 'display:none;background-color:darksalmon'>Cancel</button>
                 </div>
             </div>
         </div>

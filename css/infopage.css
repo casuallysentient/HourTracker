@@ -79,19 +79,36 @@ table {
     font-size: 20px;
     padding: 0;
     border-spacing: 0;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
 td {
-    border-bottom: 4px solid #F3E9DC;
+    border-bottom: 2px solid black;
+    border-collapse: separate;
+    border-spacing: 0 10px;
 }
 
 th {
-    border: 4px solid #F3E9DC;
+    border: 2px solid black;
+    border-collapse:collapse;
+    background-color:#F3E9DC;
 }
 
 th, td {
     padding: 10px;
+}
+
+td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+tr:hover td{
+    background: #F3E9DC !important;
 }
 
 ::-webkit-scrollbar {
@@ -135,12 +152,6 @@ th, td {
     padding-left: 1%;
     text-align: center;
     border: 5px solid black;
-}
-
-#tablecontainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
 }
 
 #userinfo {
@@ -254,11 +265,6 @@ th, td {
     flex-direction: row;
 }
 
-#newentrybutton {
-    margin-left: auto;
-    margin-right: auto;
-}
-
 #submitentry {
     cursor: pointer;
 }
@@ -280,4 +286,31 @@ th, td {
 
 #executiveactions {
     margin-left: 10px;
+}
+
+#newentrybutton {
+    display:inline-block;
+    width: 200px;
+    flex-basis:50%;
+    margin-right:2%;
+}
+
+#deleteentrybutton {
+    display: inline-block;
+    width: 200px;
+    flex-basis:50%;
+    margin-left: 2%;
+}
+
+#canceldeletebutton {
+    width: 80%;
+    height:100%;
+}
+
+#cancelentry {
+    width:30%;
+    height:50px;
+    padding:3.5px;
+    margin:2px;
+    background-color:darksalmon;
 }

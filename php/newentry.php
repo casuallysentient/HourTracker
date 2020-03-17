@@ -26,7 +26,7 @@ if ($mysqli->connect_error) {
 }
 
 $stmt = $mysqli->prepare("INSERT INTO Activity(ActivityType, ActivityDate, Length, UserID) VALUES (?,?,?,?)");
-$stmt->bind_param("ssii", $activity, $date, $length, $userid);
+$stmt->bind_param("ssdi", $activity, $date, $length, $userid);
 $stmt->execute();
 header('Location:signedin.php');
 ?>
