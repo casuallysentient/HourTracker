@@ -14,6 +14,7 @@ session_start();
         <script src="../js/volunteer.js"></script>
         <script>
             var deleting = false;
+            var cloning = false;
             function editInfo() {
                 document.getElementById("hideinfo").style.display = "none";
                 document.getElementById("editinfo").style.display = "block";
@@ -33,6 +34,7 @@ session_start();
                 document.getElementById("newentrybutton").style.display = "none";
                 document.getElementById("deleteentrybutton").style.display = "none";
                 document.getElementById("canceldeletebutton").style.display = "none";
+                document.getElementById('cloneentrybutton').style.display = "none";
             }
             function logOut() {
                 window.location.href = 'volunteer.php';
@@ -45,7 +47,7 @@ session_start();
             }
             function deleteEntry(entryid) {
                 if(deleting == true) {
-                    var deleteConfirmation = confirm("Are you sure you want to delete your account? Your email will be able to be reactivated, but the action can not otherwise be undone.");
+                    var deleteConfirmation = confirm("Are you sure you want to delete this entry?");
                     var activityNumber = entryid.substr(8);
                     console.log(activityNumber);
                     if(deleteConfirmation == true) {
@@ -61,12 +63,44 @@ session_start();
             function timeToDelete() {
                 deleting = true;
                 document.getElementById('deleteentrybutton').style.display = "none";
+                document.getElementById('cloneentrybutton').style.display = "none";
                 document.getElementById('canceldeletebutton').style.display = "inline-block";
                 document.getElementById("newentrybutton").style.display = "none";
                 var activitydatalist = document.getElementsByClassName('activitydata');
                 for(i = 0; i < activitydatalist.length; i++) {
                     activitydatalist[i].style.cursor = 'pointer';
                 }
+            }
+            function cloneEntry(entryid) {
+                if(cloning == true) {
+                    var confirmation = confirm("Are you sure you want to clone this entry?");
+                    var activityNumber = entryid.substr(8);
+                    console.log(activityNumber);
+                    if(confirmation == true) {
+                        console.log('hello');
+                        $.ajax({
+                            method: "POST",
+                            url: "cloneentry.php",
+                            data: { activitynumber: activityNumber },
+                            success: function(response) { window.location.reload(); }
+                        });
+                    }
+                }
+            }
+            function timeToClone() {
+                cloning = true;
+                document.getElementById('deleteentrybutton').style.display = "none";
+                document.getElementById('canceldeletebutton').style.display = "inline-block";
+                document.getElementById("newentrybutton").style.display = "none";
+                document.getElementById('cloneentrybutton').style.display = "none";
+                var activitydatalist = document.getElementsByClassName('activitydata');
+                for(i = 0; i < activitydatalist.length; i++) {
+                    activitydatalist[i].style.cursor = 'pointer';
+                }
+            }
+            function interactWithEntry(entryid) {
+                cloneEntry(entryid);
+                deleteEntry(entryid);
             }
         </script>
 
@@ -208,7 +242,7 @@ session_start();
                     $totalhours = 0;
                     while($row = $res->fetch_row()) {
                         $activityid = $row[0];
-                        echo "<tr class = 'activityrow' id='activity".$activityid."' onclick='deleteEntry(\"activity".$activityid."\")'><td class = 'activitydata'>" .
+                        echo "<tr class = 'activityrow' id='activity".$activityid."' onclick='interactWithEntry(\"activity".$activityid."\")'><td class = 'activitydata'>" .
                         $row[2] . '</td><td class = \'activitydata\'>' .
                         $row[1] . '</td><td class = \'activitydata\'>' .
                         $row[3] . '</td></tr>';
@@ -226,7 +260,7 @@ session_start();
                     <button type = 'button' class = "inputstyle" id = "cancelentry" onclick = "window.location.reload()">Cancel</button>
                     <input class = "entryfield" type = "submit" id = "submitentry" name = "submitentry" value = "Submit Entry">
                 </form>
-                <div style = "display:inline-flex;flex-direction:row;text-align:center;height:15%;width:40%;justify-content:center;">
+                <div id = "entryinteractors">
                     <button type = 'button' class = 'selection' id = "newentrybutton" onclick = 'newEntry()'>New Entry</button>
                     <?php
                     $mysqli = new mysqli($servername, $username, $password, $dbname);
@@ -237,6 +271,7 @@ session_start();
                     $sql = "SELECT * FROM Activity WHERE (UserID = '$userid')";
                     $res = mysqli_query($mysqli, $sql);
                     if ($res->num_rows > 0) {
+                        echo("<button type = 'button' class = 'selection' id = 'cloneentrybutton' onclick = 'timeToClone()'>Clone Entry</button>");
                         echo("<button type = 'button' class = 'selection' id = 'deleteentrybutton' onclick = 'timeToDelete()'>Delete Entry</button>");
                     }
                     $mysqli->close();

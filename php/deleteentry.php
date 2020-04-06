@@ -13,4 +13,3 @@ $stmt->bind_param("i", $activitynumber);
 $stmt->execute();
 $stmt->close();
 ?>
-<script>parent.window.location.reload();</script>

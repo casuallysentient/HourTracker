@@ -291,16 +291,21 @@ tr:hover td{
 
 #newentrybutton {
     display:inline-block;
-    width: 200px;
-    flex-basis:50%;
+    width: 30%;
     margin-right:2%;
 }
 
 #deleteentrybutton {
     display: inline-block;
-    width: 200px;
-    flex-basis:50%;
+    width: 30%;
     margin-left: 2%;
+}
+
+#cloneentrybutton {
+    display: inline-block;
+    width: 30%;
+    margin-left: 2%;
+    margin-right:2%;
 }
 
 #canceldeletebutton {
@@ -313,4 +318,13 @@ tr:hover td{
     height:50px;
     padding:3.5px;
     margin:2px;
+}
+
+#entryinteractors {
+    display:inline-flex;
+    flex-direction:row;
+    text-align:center;
+    height:15%;
+    width:60%;
+    justify-content:center;
 }
