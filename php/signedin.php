@@ -14,7 +14,6 @@ session_start();
         <script src="../js/volunteer.js"></script>
         <script>
             var deleting = false;
-            var cloning = false;
             function editInfo() {
                 document.getElementById("hideinfo").style.display = "none";
                 document.getElementById("editinfo").style.display = "block";
@@ -34,7 +33,6 @@ session_start();
                 document.getElementById("newentrybutton").style.display = "none";
                 document.getElementById("deleteentrybutton").style.display = "none";
                 document.getElementById("canceldeletebutton").style.display = "none";
-                document.getElementById('cloneentrybutton').style.display = "none";
             }
             function logOut() {
                 window.location.href = 'volunteer.php';
@@ -56,50 +54,21 @@ session_start();
                             url: "deleteentry.php",
                             data: { activitynumber: activityNumber }
                         });
-                        window.location.reload();
+                        setTimeout(location.reload.bind(location), 300);
                     }
                 }
             }
             function timeToDelete() {
                 deleting = true;
                 document.getElementById('deleteentrybutton').style.display = "none";
-                document.getElementById('cloneentrybutton').style.display = "none";
                 document.getElementById('canceldeletebutton').style.display = "inline-block";
                 document.getElementById("newentrybutton").style.display = "none";
-                var activitydatalist = document.getElementsByClassName('activitydata');
-                for(i = 0; i < activitydatalist.length; i++) {
-                    activitydatalist[i].style.cursor = 'pointer';
-                }
-            }
-            function cloneEntry(entryid) {
-                if(cloning == true) {
-                    var confirmation = confirm("Are you sure you want to clone this entry?");
-                    var activityNumber = entryid.substr(8);
-                    console.log(activityNumber);
-                    if(confirmation == true) {
-                        console.log('hello');
-                        $.ajax({
-                            method: "POST",
-                            url: "cloneentry.php",
-                            data: { activitynumber: activityNumber },
-                            success: function(response) { window.location.reload(); }
-                        });
-                    }
-                }
-            }
-            function timeToClone() {
-                cloning = true;
-                document.getElementById('deleteentrybutton').style.display = "none";
-                document.getElementById('canceldeletebutton').style.display = "inline-block";
-                document.getElementById("newentrybutton").style.display = "none";
-                document.getElementById('cloneentrybutton').style.display = "none";
                 var activitydatalist = document.getElementsByClassName('activitydata');
                 for(i = 0; i < activitydatalist.length; i++) {
                     activitydatalist[i].style.cursor = 'pointer';
                 }
             }
             function interactWithEntry(entryid) {
-                cloneEntry(entryid);
                 deleteEntry(entryid);
             }
         </script>
@@ -271,7 +240,6 @@ session_start();
                     $sql = "SELECT * FROM Activity WHERE (UserID = '$userid')";
                     $res = mysqli_query($mysqli, $sql);
                     if ($res->num_rows > 0) {
-                        echo("<button type = 'button' class = 'selection' id = 'cloneentrybutton' onclick = 'timeToClone()'>Clone Entry</button>");
                         echo("<button type = 'button' class = 'selection' id = 'deleteentrybutton' onclick = 'timeToDelete()'>Delete Entry</button>");
                     }
                     $mysqli->close();

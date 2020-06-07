@@ -301,13 +301,6 @@ tr:hover td{
     margin-left: 2%;
 }
 
-#cloneentrybutton {
-    display: inline-block;
-    width: 30%;
-    margin-left: 2%;
-    margin-right:2%;
-}
-
 #canceldeletebutton {
     width: 80%;
     height:100%;
